@@ -92,11 +92,16 @@ python fraud_detection.py
 streamlit run fraud_app_streamlit.py
 ```
 
+### 🌐 **Veya Direkt Canlı Demo'yu Deneyin!**
+**Demo Linki:** https://credit-card-fraud-detection-11.streamlit.app/
+
 ## 🌐 **Canlı Demo**
 
 **🚀 Uygulamayı Canlı Deneyin:** 
-- Streamlit Cloud: `https://ibohappy-credit-card-fraud-detection.streamlit.app`
-- Lokal: `http://localhost:8501`
+- **Web Demo:** https://credit-card-fraud-detection-11.streamlit.app/
+- **Lokal:** `http://localhost:8501`
+
+> 🎯 Canlı demo'da projenin tüm özelliklerini test edebilir, V1-V28 parametrelerini ayarlayarak gerçek zamanlı dolandırıcılık tespiti yapabilirsiniz!
 
 ## 📱 **Web Uygulaması Özellikleri**
 
@@ -209,6 +214,10 @@ Bu proje **MIT License** altında lisanslanmıştır. Ticari kullanım için ser
 **Email:** [Email adresiniz]
 
 ---
+
+## 🚀 **Projeyi Hemen Deneyin!**
+
+**🌐 Canlı Demo:** https://credit-card-fraud-detection-11.streamlit.app/
 
 **🎯 Bu proje, finans sektöründe yapay zeka kullanımının gücünü gösteren production-ready bir çözümdür. Bankalar ve fintech şirketleri için gerçek zamanlı dolandırıcılık tespiti sağlar.** 
 
