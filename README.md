@@ -54,6 +54,11 @@ python fraud_detection.py
 streamlit run fraud_app_streamlit.py
 ```
 
+## 🌐 **CANLI DEMO**
+**🚀 Uygulamayı Canlı Deneyin:** [BURAYA STREAMLIT CLOUD URL'İ EKLENECEKTİR]
+
+> Not: Deployment tamamlandığında bu link aktif olacaktır.
+
 ## 📈 Model Performansları
 
 | Model | Sampling | F1-Score | Precision | Recall | ROC-AUC |
