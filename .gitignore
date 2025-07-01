@@ -1,0 +1,29 @@
+# Büyük veri dosyaları
+creditcard.csv
+*.csv
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment
+.env
+.venv
+env/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Model files (büyükse)
+# *.pkl  # Gerekirse bu satırı açın 
