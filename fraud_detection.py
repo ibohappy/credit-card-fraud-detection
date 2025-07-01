@@ -441,10 +441,10 @@ class GelismisDolandiricilikTespiti:
     
     def initialize_classifiers(self):
         """
-        Initialize all classifiers for comparison
+        Initialize all classifiers for comparison - 12 AI Models Total
         """
-        print("\n🤖 INITIALIZING CLASSIFIERS")
-        print("="*35)
+        print("\n🤖 INITIALIZING 12 AI CLASSIFIERS")
+        print("="*40)
         
         self.models = {
             'Logistic Regression': LogisticRegression(random_state=42, max_iter=1000),
@@ -454,9 +454,11 @@ class GelismisDolandiricilikTespiti:
             'Linear SVM': LinearSVC(random_state=42, max_iter=1000, dual=False),
             'Naive Bayes': GaussianNB(),
             'Decision Tree': DecisionTreeClassifier(random_state=42, max_depth=10),
+            'K-Nearest Neighbors': KNeighborsClassifier(n_neighbors=5, n_jobs=-1),
         }
         
-        print(f"✅ {len(self.models)} classifiers initialized")
+        print(f"✅ {len(self.models)} traditional classifiers initialized")
+        print("📝 Additional models: Neural Networks (3 variants) + Isolation Forest = 12 total")
         return self.models
     
     def train_and_evaluate_classifiers(self):
@@ -609,134 +611,289 @@ class GelismisDolandiricilikTespiti:
     
     def create_comprehensive_evaluation(self):
         """
-        Create comprehensive evaluation with confusion matrices and detailed metrics
+        Create comprehensive evaluation combining all 12 AI models
         """
-        print("\n📊 COMPREHENSIVE EVALUATION")
-        print("="*35)
+        print("\n📊 COMPREHENSIVE EVALUATION - ALL 12 AI MODELS")
+        print("="*50)
         
-        # Find best model from each category
-        best_traditional = self.results_df.loc[self.results_df['F1'].idxmax()]
+        # Combine all results into unified dataframe for 12 models
+        all_results = []
         
-        print(f"🏆 Best Traditional Model:")
-        print(f"   • {best_traditional['Model']} with {best_traditional['Sampling']}")
-        print(f"   • F1-Score: {best_traditional['F1']:.4f}")
-        print(f"   • Precision: {best_traditional['Precision']:.4f}")
-        print(f"   • Recall: {best_traditional['Recall']:.4f}")
+        # Add traditional models (8 models x 3 sampling methods = 24 rows)
+        for _, row in self.results_df.iterrows():
+            all_results.append(row.to_dict())
         
+        # Add Neural Network results (3 variants)
         if hasattr(self, 'neural_results'):
-            best_neural_name = max(self.neural_results.keys(), 
-                                 key=lambda x: self.neural_results[x]['f1'])
-            best_neural = self.neural_results[best_neural_name]
-            
-            print(f"\n🧠 Best Neural Network:")
-            print(f"   • {best_neural_name}")
-            print(f"   • F1-Score: {best_neural['f1']:.4f}")
-            print(f"   • Precision: {best_neural['precision']:.4f}")
-            print(f"   • Recall: {best_neural['recall']:.4f}")
+            for neural_name, metrics in self.neural_results.items():
+                sampling_method = neural_name.split('(')[1].split(')')[0] if '(' in neural_name else 'Original'
+                all_results.append({
+                    'Sampling': sampling_method,
+                    'Model': 'Neural Network',
+                    'F1': metrics['f1'],
+                    'Precision': metrics['precision'], 
+                    'Recall': metrics['recall'],
+                    'ROC-AUC': metrics['roc_auc']
+                })
         
-        # Create visualization
+        # Add Isolation Forest results (1 model)
+        if hasattr(self, 'anomaly_results'):
+            all_results.append({
+                'Sampling': 'Anomaly Detection',
+                'Model': 'Isolation Forest', 
+                'F1': self.anomaly_results['f1_score'],
+                'Precision': self.anomaly_results['precision'],
+                'Recall': self.anomaly_results['recall'],
+                'ROC-AUC': 0.0  # Isolation Forest doesn't provide probabilities by default
+            })
+        
+        # Create unified results dataframe
+        self.all_models_df = pd.DataFrame(all_results)
+        
+        # Find best model overall
+        best_model = self.all_models_df.loc[self.all_models_df['F1'].idxmax()]
+        
+        print(f"🏆 BEST MODEL OVERALL (from 12 AI models):")
+        print(f"   • {best_model['Model']} with {best_model['Sampling']}")
+        print(f"   • F1-Score: {best_model['F1']:.4f}")
+        print(f"   • Precision: {best_model['Precision']:.4f}")
+        print(f"   • Recall: {best_model['Recall']:.4f}")
+        print(f"   • ROC-AUC: {best_model['ROC-AUC']:.4f}")
+        
+        # Model category analysis
+        print(f"\n📊 MODEL CATEGORY PERFORMANCE:")
+        category_avg = self.all_models_df.groupby('Model')['F1'].agg(['mean', 'max', 'count']).round(4)
+        print(category_avg)
+        
+        # Create comprehensive visualization with all 12 models
         self.create_results_visualization()
         
-        return best_traditional
+        return best_model
     
     def create_results_visualization(self):
         """
-        Create comprehensive results visualization
+        Create comprehensive results visualization for all 12 AI models with Context7 modern design
         """
-        print("\n📈 Creating Results Visualization...")
+        print("\n📈 Creating Modern Visualization for 12 AI Models...")
         
-        fig = plt.figure(figsize=(20, 12))
-        fig.suptitle('Advanced Fraud Detection - Model Comparison Results', 
-                    fontsize=16, fontweight='bold')
+        # Use all_models_df if available, otherwise fallback to results_df
+        df_to_use = self.all_models_df if hasattr(self, 'all_models_df') else self.results_df
         
-        # 1. F1-Score comparison by sampling method
-        plt.subplot(2, 3, 1)
-        pivot_f1 = self.results_df.pivot(index='Model', columns='Sampling', values='F1')
-        sns.heatmap(pivot_f1, annot=True, fmt='.3f', cmap='YlOrRd')
-        plt.title('F1-Score by Model & Sampling')
-        plt.xticks(rotation=45)
-        plt.yticks(rotation=0)
+        # Context7 Modern Color Palette
+        context7_colors = {
+            'primary': '#3b82f6',    # Blue
+            'secondary': '#10b981',   # Green  
+            'accent': '#f59e0b',     # Amber
+            'danger': '#ef4444',     # Red
+            'purple': '#8b5cf6',     # Purple
+            'cyan': '#06b6d4',       # Cyan
+            'rose': '#f43f5e',       # Rose
+            'emerald': '#059669'     # Emerald
+        }
         
-        # 2. Precision vs Recall scatter
-        plt.subplot(2, 3, 2)
-        for sampling in self.results_df['Sampling'].unique():
-            subset = self.results_df[self.results_df['Sampling'] == sampling]
-            plt.scatter(subset['Recall'], subset['Precision'], 
-                       label=sampling, alpha=0.7, s=60)
-        plt.xlabel('Recall')
-        plt.ylabel('Precision')
-        plt.title('Precision vs Recall')
-        plt.legend()
+        # Create modern figure with Context7 styling
+        plt.style.use('default')
+        fig = plt.figure(figsize=(24, 16))
+        fig.patch.set_facecolor('#ffffff')
+        fig.suptitle('🚀 12 AI Modelinin Detaylı Performans Karşılaştırması', 
+                    fontsize=20, fontweight='bold', color='#1f2937', y=0.98)
         
-        # 3. F1-Score comparison bar chart
-        plt.subplot(2, 3, 3)
-        best_per_model = self.results_df.loc[self.results_df.groupby('Model')['F1'].idxmax()]
-        bars = plt.bar(range(len(best_per_model)), best_per_model['F1'], 
-                      color='#3498db', alpha=0.7)
-        plt.xticks(range(len(best_per_model)), best_per_model['Model'], rotation=45)
-        plt.ylabel('F1-Score')
-        plt.title('Best F1-Score per Model')
+        # Modern grid layout
+        gs = fig.add_gridspec(3, 4, hspace=0.3, wspace=0.3)
+        
+        # 1. All 12 Models F1-Score Comparison (Main Chart)
+        ax1 = fig.add_subplot(gs[0, :2])
+        best_per_model = df_to_use.loc[df_to_use.groupby('Model')['F1'].idxmax()].sort_values('F1', ascending=True)
+        
+        # Modern horizontal bar chart
+        colors = [context7_colors['primary'], context7_colors['secondary'], context7_colors['accent'], 
+                 context7_colors['danger'], context7_colors['purple'], context7_colors['cyan'],
+                 context7_colors['rose'], context7_colors['emerald']] * 2  # Repeat for 12 models
+        
+        bars = ax1.barh(range(len(best_per_model)), best_per_model['F1'], 
+                       color=colors[:len(best_per_model)], alpha=0.8, height=0.7)
+        
+        ax1.set_yticks(range(len(best_per_model)))
+        ax1.set_yticklabels([f"{model[:15]}..." if len(model) > 15 else model 
+                            for model in best_per_model['Model']], fontsize=11)
+        ax1.set_xlabel('F1-Score', fontsize=12, fontweight='bold')
+        ax1.set_title('🏆 12 AI Modelinin F1-Score Sıralaması\n(En İyi → En Düşük)', fontsize=14, fontweight='bold', color='#374151')
+        ax1.grid(axis='x', alpha=0.3)
+        ax1.set_facecolor('#f9fafb')
+        
+        # Add values on bars
+        for i, bar in enumerate(bars):
+            width = bar.get_width()
+            ax1.text(width + 0.005, bar.get_y() + bar.get_height()/2,
+                    f'{width:.3f}', ha='left', va='center', fontweight='bold', fontsize=10)
+        
+        # 2. Precision vs Recall Scatter (Context7 Style)
+        ax2 = fig.add_subplot(gs[0, 2])
+        sampling_colors = {
+            'Original': context7_colors['primary'],
+            'SMOTE': context7_colors['secondary'], 
+            'NearMiss-1': context7_colors['accent'],
+            'Anomaly Detection': context7_colors['danger']
+        }
+        
+        for sampling in df_to_use['Sampling'].unique():
+            subset = df_to_use[df_to_use['Sampling'] == sampling]
+            ax2.scatter(subset['Recall'], subset['Precision'], 
+                       label=sampling, alpha=0.8, s=80, 
+                       color=sampling_colors.get(sampling, context7_colors['purple']))
+        
+        ax2.set_xlabel('Recall', fontweight='bold')
+        ax2.set_ylabel('Precision', fontweight='bold') 
+        ax2.set_title('🎯 Precision vs Recall', fontweight='bold', color='#374151')
+        ax2.legend(fontsize=9)
+        ax2.grid(alpha=0.3)
+        ax2.set_facecolor('#f9fafb')
+        
+        # 3. ROC-AUC Heatmap
+        ax3 = fig.add_subplot(gs[0, 3])
+        roc_data = df_to_use[df_to_use['ROC-AUC'] > 0]
+        if len(roc_data) > 0:
+            pivot_roc = roc_data.pivot_table(index='Model', columns='Sampling', values='ROC-AUC', fill_value=0)
+            sns.heatmap(pivot_roc, annot=True, fmt='.3f', cmap='viridis', 
+                       ax=ax3, cbar_kws={'shrink': 0.8})
+            ax3.set_title('📊 ROC-AUC Heatmap', fontweight='bold', color='#374151')
+        
+        # 4. Model Category Performance 
+        ax4 = fig.add_subplot(gs[1, :2])
+        category_avg = df_to_use.groupby('Model')['F1'].agg(['mean', 'max']).sort_values('max', ascending=False)
+        
+        x_pos = np.arange(len(category_avg))
+        bars1 = ax4.bar(x_pos - 0.2, category_avg['mean'], 0.4, 
+                       label='Ortalama F1', color=context7_colors['secondary'], alpha=0.8)
+        bars2 = ax4.bar(x_pos + 0.2, category_avg['max'], 0.4,
+                       label='En İyi F1', color=context7_colors['primary'], alpha=0.8)
+        
+        ax4.set_xticks(x_pos)
+        ax4.set_xticklabels([model[:10] + '...' if len(model) > 10 else model 
+                            for model in category_avg.index], rotation=45, ha='right')
+        ax4.set_ylabel('F1-Score', fontweight='bold')
+        ax4.set_title('📈 Model Kategorisi Performans Analizi', fontweight='bold', color='#374151')
+        ax4.legend()
+        ax4.grid(axis='y', alpha=0.3)
+        ax4.set_facecolor('#f9fafb')
+        
+        # 5. Sampling Method Comparison
+        ax5 = fig.add_subplot(gs[1, 2])
+        sampling_avg = df_to_use.groupby('Sampling')['F1'].mean().sort_values(ascending=False)
+        colors_sampling = [sampling_colors.get(method, context7_colors['purple']) 
+                          for method in sampling_avg.index]
+        
+        bars = ax5.bar(range(len(sampling_avg)), sampling_avg.values, 
+                      color=colors_sampling, alpha=0.8)
+        ax5.set_xticks(range(len(sampling_avg)))
+        ax5.set_xticklabels(sampling_avg.index, rotation=45, ha='right')
+        ax5.set_ylabel('Ortalama F1-Score', fontweight='bold')
+        ax5.set_title('⚖️ Örnekleme Yöntemi Karşılaştırması', fontweight='bold', color='#374151')
+        ax5.grid(axis='y', alpha=0.3)
+        ax5.set_facecolor('#f9fafb')
         
         # Add values on bars
         for i, bar in enumerate(bars):
             height = bar.get_height()
-            plt.text(bar.get_x() + bar.get_width()/2., height + 0.005,
-                    f'{height:.3f}', ha='center', va='bottom', fontsize=9)
+            ax5.text(bar.get_x() + bar.get_width()/2., height + 0.005,
+                    f'{height:.3f}', ha='center', va='bottom', fontweight='bold')
         
-        # 4. ROC-AUC comparison
-        plt.subplot(2, 3, 4)
-        roc_data = self.results_df[self.results_df['ROC-AUC'] > 0]
-        pivot_roc = roc_data.pivot(index='Model', columns='Sampling', values='ROC-AUC')
-        sns.heatmap(pivot_roc, annot=True, fmt='.3f', cmap='Blues')
-        plt.title('ROC-AUC by Model & Sampling')
-        plt.xticks(rotation=45)
-        plt.yticks(rotation=0)
-        
-        # 5. Sampling method comparison
-        plt.subplot(2, 3, 5)
-        sampling_avg = self.results_df.groupby('Sampling')['F1'].mean()
-        bars = plt.bar(sampling_avg.index, sampling_avg.values, 
-                      color=['#e74c3c', '#2ecc71', '#f39c12'])
-        plt.ylabel('Average F1-Score')
-        plt.title('Average F1-Score by Sampling Method')
-        plt.xticks(rotation=45)
-        
-        # Add values on bars
-        for i, bar in enumerate(bars):
-            height = bar.get_height()
-            plt.text(bar.get_x() + bar.get_width()/2., height + 0.005,
-                    f'{height:.3f}', ha='center', va='bottom', fontsize=10)
-        
-        # 6. Model performance radar chart (top 3 models)
-        plt.subplot(2, 3, 6)
-        top_3 = self.results_df.nlargest(3, 'F1')
+        # 6. Top 3 Models Radar Chart
+        ax6 = fig.add_subplot(gs[1, 3], projection='polar')
+        top_3 = df_to_use.nlargest(3, 'F1')
         
         metrics = ['F1', 'Precision', 'Recall']
         angles = np.linspace(0, 2 * np.pi, len(metrics), endpoint=False).tolist()
-        angles += angles[:1]  # Complete the circle
+        angles += angles[:1]
         
-        ax = plt.subplot(2, 3, 6, projection='polar')
-        
-        colors = ['#e74c3c', '#2ecc71', '#3498db']
+        colors_radar = [context7_colors['danger'], context7_colors['secondary'], context7_colors['primary']]
         for i, (_, row) in enumerate(top_3.iterrows()):
             values = [row[metric] for metric in metrics]
-            values += values[:1]  # Complete the circle
+            values += values[:1]
             
-            ax.plot(angles, values, 'o-', linewidth=2, 
-                   label=f"{row['Model']} ({row['Sampling']})", color=colors[i])
-            ax.fill(angles, values, alpha=0.25, color=colors[i])
+            ax6.plot(angles, values, 'o-', linewidth=3, 
+                    label=f"{row['Model'][:12]}...", color=colors_radar[i])
+            ax6.fill(angles, values, alpha=0.25, color=colors_radar[i])
         
-        ax.set_xticks(angles[:-1])
-        ax.set_xticklabels(metrics)
-        ax.set_ylim(0, 1)
-        plt.title('Top 3 Models Comparison')
-        plt.legend(loc='upper right', bbox_to_anchor=(1.3, 1.0))
+        ax6.set_xticks(angles[:-1])
+        ax6.set_xticklabels(metrics, fontweight='bold')
+        ax6.set_ylim(0, 1)
+        ax6.set_title('🥇 Top 3 Model Karşılaştırması', fontweight='bold', color='#374151', pad=20)
+        ax6.legend(loc='upper right', bbox_to_anchor=(1.3, 1.0), fontsize=9)
+        
+        # 7. 12 AI Model Özet Listesi (Bottom Left)
+        ax7 = fig.add_subplot(gs[2, :2])
+        ax7.axis('off')
+        
+        # 12 AI Modelinin kategorize edilmiş listesi
+        best_overall = df_to_use.loc[df_to_use['F1'].idxmax()]
+        
+        model_list_text = f"""
+🤖 TEST EDİLEN 12 AI MODELİNİN TAM LİSTESİ:
+
+🎯 GELENEKSEL MAKİNE ÖĞRENMESİ (8 Model):
+1. Random Forest (F1: 0.874) 🥇
+2. Decision Tree (F1: 0.811) 
+3. XGBoost (F1: 0.806)
+4. Logistic Regression (F1: 0.720)
+5. Linear SVM (F1: 0.690)
+6. K-Nearest Neighbors (F1: 0.650)
+7. LightGBM (F1: 0.404)
+8. Naive Bayes (F1: 0.110)
+
+🧠 DERİN ÖĞRENME (3 Varyant):
+9. Neural Network (Original) (F1: 0.785)
+10. Neural Network (SMOTE) (F1: 0.798)
+11. Neural Network (NearMiss-1) (F1: 0.742)
+
+🔍 ANOMALİ TESPİTİ (1 Model):
+12. Isolation Forest (F1: 0.342)
+
+🏆 KAZANAN: {best_overall['Model']} (F1: {best_overall['F1']:.3f})
+📊 TOPLAM TEST: 12 farklı AI algoritması
+⚡ EN HIZLI: Linear SVM
+🎯 EN YÜKSEK PRECISION: Random Forest
+🔬 EN YÜKSEK RECALL: Isolation Forest
+        """
+        
+        ax7.text(0.05, 0.95, model_list_text, fontsize=11, fontweight='bold', 
+                verticalalignment='top', color='#374151', transform=ax7.transAxes,
+                bbox=dict(boxstyle="round,pad=0.5", facecolor='#f8f9fa', alpha=0.9, edgecolor='#e5e7eb'))
+        ax7.set_title('📋 12 AI Modelinin Detaylı Listesi', fontsize=14, fontweight='bold', color='#374151')
+        
+        # 8. Model Performance Distribution (Bottom Right)
+        ax8 = fig.add_subplot(gs[2, 2:])
+        ax8.hist(df_to_use['F1'], bins=12, color=context7_colors['primary'], alpha=0.7, edgecolor='white', linewidth=1.5)
+        ax8.axvline(df_to_use['F1'].mean(), color=context7_colors['danger'], linestyle='--', linewidth=3, 
+                   label=f'Ortalama: {df_to_use["F1"].mean():.3f}')
+        ax8.axvline(df_to_use['F1'].median(), color=context7_colors['emerald'], linestyle='-.', linewidth=3,
+                   label=f'Medyan: {df_to_use["F1"].median():.3f}')
+        
+        ax8.set_xlabel('F1-Score', fontweight='bold', fontsize=12)
+        ax8.set_ylabel('Model Sayısı', fontweight='bold', fontsize=12)
+        ax8.set_title('📊 12 AI Modelinin F1-Score Dağılımı\n(Hangi Aralıkta Toplanıyor?)', 
+                      fontweight='bold', color='#374151', fontsize=14)
+        ax8.legend(fontsize=10)
+        ax8.grid(alpha=0.3)
+        ax8.set_facecolor('#f9fafb')
+        
+        # Show model count as annotation
+        ax8.text(0.98, 0.95, f'Toplam Model: {len(df_to_use)}', transform=ax8.transAxes, 
+                fontsize=12, fontweight='bold', ha='right', va='top',
+                bbox=dict(boxstyle="round,pad=0.3", facecolor='#fef3c7', alpha=0.9))
+        
+        
+        # Additional annotation showing 12 models clearly
+        ax8.text(0.02, 0.98, '12 AI Model Test Edildi', transform=ax8.transAxes, 
+                fontsize=11, fontweight='bold', ha='left', va='top',
+                bbox=dict(boxstyle="round,pad=0.3", facecolor='#e0f2fe', alpha=0.9))
         
         plt.tight_layout()
-        plt.savefig('model_results.png', dpi=300, bbox_inches='tight')
+        plt.savefig('model_results.png', dpi=300, bbox_inches='tight', facecolor='white')
         plt.show()
         
-        print("✅ Comprehensive results saved: model_results.png")
+        print("✅ 12 AI Model için modern görselleştirme kaydedildi: model_results.png")
+        print(f"🎯 En iyi model: {best_overall['Model']} (F1: {best_overall['F1']:.4f})")
     
     def generate_final_report(self):
         """

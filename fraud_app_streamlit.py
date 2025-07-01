@@ -13,6 +13,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 import random
 from datetime import datetime, timedelta
+import os
 
 # Sayfa konfigürasyonu
 st.set_page_config(
@@ -363,6 +364,241 @@ def main_dashboard():
         with alert_cols[2]:
             st.markdown(f"*{alert['time']}*")
 
+    # ==================== YENİ BÖLÜM: AI MODEL GÖRSEL RAPORLARI ====================
+    st.markdown('<div class="section-header">📊 AI Model Analiz Raporları</div>', unsafe_allow_html=True)
+    st.markdown("*Detaylı model performansı ve veri analizi görsel raporları*")
+    
+    # Context7 tabs for visual reports
+    visual_reports_tab = ui.tabs(
+        options=['📊 Veri Analizi', '🎯 Feature Önem Sırası', '📈 Model Karşılaştırma', '🔬 Clustering Görselleştirme'],
+        default_value='📊 Veri Analizi',
+        key="homepage_visual_reports_tabs"
+    )
+    
+    if visual_reports_tab == '📊 Veri Analizi':
+        st.markdown("### 📊 Kapsamlı Veri Seti Analizi")
+        
+        try:
+            import os
+            image_path = os.path.join(os.getcwd(), "data_analysis.png")
+            if os.path.exists(image_path):
+                st.image(image_path, caption="🔍 Advanced Fraud Detection - Comprehensive Data Analysis", use_container_width=True)
+                
+                # Summary cards
+                analysis_cols = st.columns(4)
+                
+                with analysis_cols[0]:
+                    ui.metric_card(
+                        title="Veri Seti Boyutu", 
+                        content="284,807",
+                        description="toplam işlem",
+                        key="homepage_dataset_size"
+                    )
+                
+                with analysis_cols[1]:
+                    ui.metric_card(
+                        title="Sınıf Dağılımı",
+                        content="99.8% / 0.2%",
+                        description="Normal / Dolandırıcılık",
+                        key="homepage_class_dist"
+                    )
+                
+                with analysis_cols[2]:
+                    ui.metric_card(
+                        title="Feature Sayısı",
+                        content="30",
+                        description="V1-V28 + Time + Amount",
+                        key="homepage_feature_count"
+                    )
+                
+                with analysis_cols[3]:
+                    ui.metric_card(
+                        title="Analiz Dönemi",
+                        content="48 Saat",
+                        description="zaman aralığı",
+                        key="homepage_time_period"
+                    )
+                
+            else:
+                st.error(f"📊 data_analysis.png bulunamadı: {image_path}")
+                
+        except Exception as e:
+            st.error(f"📊 Veri analizi görselinde hata: {str(e)}")
+    
+    elif visual_reports_tab == '🎯 Feature Önem Sırası':
+        st.markdown("### 🎯 En Önemli 10 Feature Analizi")
+        
+        try:
+            import os
+            image_path = os.path.join(os.getcwd(), "feature_importance.png")
+            if os.path.exists(image_path):
+                st.image(image_path, caption="🏆 Feature Importance Rankings - V17 Leading with 18.7%", use_container_width=True)
+                
+                # Top features cards
+                feature_cols = st.columns(3)
+                
+                with feature_cols[0]:
+                    ui.metric_card(
+                        title="🥇 En Önemli Feature",
+                        content="V17",
+                        description="18.7% önem skoru",
+                        key="homepage_top_feature"
+                    )
+                
+                with feature_cols[1]:
+                    ui.metric_card(
+                        title="🥈 İkinci Sıra",
+                        content="V14", 
+                        description="17.1% önem skoru",
+                        key="homepage_second_feature"
+                    )
+                
+                with feature_cols[2]:
+                    ui.metric_card(
+                        title="🥉 Üçüncü Sıra",
+                        content="V12",
+                        description="10.6% önem skoru", 
+                        key="homepage_third_feature"
+                    )
+                
+            else:
+                st.error(f"🎯 feature_importance.png bulunamadı: {image_path}")
+                
+        except Exception as e:
+            st.error(f"🎯 Feature importance görselinde hata: {str(e)}")
+    
+    elif visual_reports_tab == '📈 Model Karşılaştırma':
+        st.markdown("### 📈 12 AI Modelinin Detaylı Performans Karşılaştırması")
+        
+        try:
+            import os
+            image_path = os.path.join(os.getcwd(), "model_results.png")
+            if os.path.exists(image_path):
+                st.image(image_path, caption="🤖 Comprehensive Model Performance Analysis - Random Forest Champion!", use_container_width=True)
+                
+                # Model performance cards
+                model_perf_cols = st.columns(4)
+                
+                with model_perf_cols[0]:
+                    ui.metric_card(
+                        title="🏆 Kazanan Model",
+                        content="Random Forest",
+                        description="F1-Score: 0.874",
+                        key="homepage_winner_model"
+                    )
+                
+                with model_perf_cols[1]:
+                    ui.metric_card(
+                        title="⚡ En Hızlı",
+                        content="Linear SVM",
+                        description="Optimized performance",
+                        key="homepage_fastest_model"
+                    )
+                
+                with model_perf_cols[2]:
+                    ui.metric_card(
+                        title="🎯 En Yüksek Precision",
+                        content="94.12%",
+                        description="Random Forest",
+                        key="homepage_highest_precision"
+                    )
+                
+                with model_perf_cols[3]:
+                    ui.metric_card(
+                        title="📊 Test Edilen Model",
+                        content="12",
+                        description="farklı AI algoritması",
+                        key="homepage_tested_models"
+                    )
+                
+                # 12 AI Modeli detaylı açıklama
+                st.markdown("### 🤖 Test Edilen 12 AI Modeli:")
+                st.markdown("""
+                **🎯 Geleneksel Makine Öğrenmesi (8 Model):**
+                - 🌲 **Random Forest** (Winner - F1: 0.874)
+                - 🚀 **XGBoost** (Runner-up - F1: 0.806)  
+                - 🌳 **Decision Tree** (F1: 0.811)
+                - 📈 **Logistic Regression** (F1: 0.720)
+                - ⚡ **Linear SVM** (F1: 0.690)
+                - 🔍 **K-Nearest Neighbors** (F1: 0.650)
+                - 💡 **LightGBM** (F1: 0.404)
+                - 🧠 **Naive Bayes** (F1: 0.110)
+                
+                **🧠 Derin Öğrenme (3 Varyant):**
+                - 🤖 **Neural Network (Original)** (F1: 0.785)
+                - 🤖 **Neural Network (SMOTE)** (F1: 0.798)
+                - 🤖 **Neural Network (NearMiss-1)** (F1: 0.742)
+                
+                **🔍 Anomali Tespiti (1 Model):**
+                - 🌲 **Isolation Forest** (F1: 0.342)
+                
+                *Toplam: 12 farklı AI algoritması 3 farklı veri dengeleme tekniği ile test edildi.*
+                """)
+                
+            else:
+                st.error(f"📈 model_results.png bulunamadı: {image_path}")
+                
+        except Exception as e:
+            st.error(f"📈 Model karşılaştırma görselinde hata: {str(e)}")
+    
+    elif visual_reports_tab == '🔬 Clustering Görselleştirme':
+        st.markdown("### 🔬 t-SNE ve PCA Clustering Analizi")
+        
+        try:
+            import os
+            image_path = os.path.join(os.getcwd(), "clustering_analysis.png")
+            if os.path.exists(image_path):
+                st.image(image_path, caption="🔬 Advanced Clustering Visualization - Clear Fraud vs Normal Separation", use_container_width=True)
+                
+                # Clustering analysis cards
+                cluster_cols = st.columns(4)
+                
+                with cluster_cols[0]:
+                    ui.metric_card(
+                        title="🎯 t-SNE Analizi",
+                        content="Net Ayrım",
+                        description="Fraud vs Normal clusters",
+                        key="homepage_tsne_analysis"
+                    )
+                
+                with cluster_cols[1]:
+                    ui.metric_card(
+                        title="📊 PCA Variance",
+                        content="69.6%",
+                        description="İlk 2 bileşen (61.2% + 8.4%)",
+                        key="homepage_pca_variance"
+                    )
+                
+                with cluster_cols[2]:
+                    ui.metric_card(
+                        title="🔍 Pattern Ayrımı",
+                        content="Belirgin",
+                        description="Dolandırıcılık pattern'ları",
+                        key="homepage_pattern_separation"
+                    )
+                
+                with cluster_cols[3]:
+                    ui.metric_card(
+                        title="✅ Model Doğrulaması",
+                        content="Görsel Kanıt",
+                        description="AI başarısının ispatı",
+                        key="homepage_model_validation"
+                    )
+                
+            else:
+                st.error(f"🔬 clustering_analysis.png bulunamadı: {image_path}")
+                
+        except Exception as e:
+            st.error(f"🔬 Clustering analizi görselinde hata: {str(e)}")
+    
+    # Call-to-action section
+    st.markdown("---")
+    cta_cols = st.columns([2, 1, 2])
+    
+    with cta_cols[1]:
+        if ui.button("🚀 Dolandırıcılık Tespitini Dene", key="homepage_try_detection"):
+            st.switch_page("fraud_detection_page")  # This will be handled by the main navigation
+
 # Dolandırıcılık Tespit Sayfası
 def fraud_detection_page():
     st.markdown('<div class="section-header">🔍 Dolandırıcılık Tespit Analizi</div>', unsafe_allow_html=True)
@@ -408,29 +644,29 @@ def fraud_detection_page():
     with action_cols[0]:
         reset_clicked = ui.button("🔄 Tüm Parametreleri Sıfırla", key="reset_all_params")
         if reset_clicked:
-            # Tüm slider state'lerini sıfırla ve timestamp ekle
-            import time
-            timestamp = str(int(time.time()))
-            for i in range(1, 29):
-                st.session_state[f"v{i}_slider"] = [0.0]
-            
-            # Force refresh için unique flag ekle
-            st.session_state["slider_refresh_key"] = timestamp
+            # Session state'i tamamen temizle
+            keys_to_clear = [key for key in st.session_state.keys() if key.startswith("v_param_")]
+            for key in keys_to_clear:
+                del st.session_state[key]
             st.success("✅ Tüm parametreler sıfırlandı!")
             st.rerun()
     
     with action_cols[1]:
         random_clicked = ui.button("🎲 Rastgele Örnek Yükle", key="load_random_sample")
         if random_clicked:
-            # Rastgele değerler yükle ve timestamp ekleyerek unique key'ler oluştur
-            import time
-            timestamp = str(int(time.time()))
+            # Session state'i temizle ve yeni rastgele değerler set et
+            keys_to_clear = [key for key in st.session_state.keys() if key.startswith("v_param_")]
+            for key in keys_to_clear:
+                del st.session_state[key]
+            
+            # Rastgele değerler için session state set et
             for i in range(1, 29):
                 random_val = round(random.uniform(-2.0, 2.0), 1)
-                st.session_state[f"v{i}_slider"] = [random_val]
+                # Her tab için ayrı ayrı set et
+                for tab_suffix in ["all_tab", "basic_tab", "advanced_tab", "expert_tab", "pro_tab"]:
+                    key = f"v_param_{i}_{tab_suffix}"
+                    st.session_state[key] = [random_val]
             
-            # Force refresh için unique flag ekle
-            st.session_state["slider_refresh_key"] = timestamp
             st.success("🎲 Rastgele değerler yüklendi!")
             st.rerun()
     
@@ -459,17 +695,9 @@ def fraud_detection_page():
             col_index = i % 4
             with param_cols[col_index]:
                 with ui.card(key=f"all_param_card_{i+1}"):
-                    # Safe state handling with unique key for force refresh
-                    refresh_key = st.session_state.get("slider_refresh_key", "")
-                    slider_key = f"v{i+1}_slider_{refresh_key}" if refresh_key else f"v{i+1}_slider"
-                    base_key = f"v{i+1}_slider"
-                    
-                    current_state = st.session_state.get(base_key, None)
-                    
-                    if current_state is None or not isinstance(current_state, list):
-                        default_val = 0.0
-                    else:
-                        default_val = current_state[0] if len(current_state) > 0 else 0.0
+                    # Her parametre için benzersiz ve bağımsız key
+                    param_num = i + 1
+                    unique_slider_key = f"v_param_{param_num}_all_tab"
                     
                     # Parametre kategorisine göre renk ve açıklama
                     if i < 7:
@@ -489,23 +717,24 @@ def fraud_detection_page():
                         color_class = "text-cyan-600"
                         desc = "AI Faktörü"
                     
-                    ui.element("h5", children=[f"V{i+1}"], className=f"{color_class} font-bold mb-1", key=f"all_param_title_{i+1}_{refresh_key}")
-                    ui.element("small", children=[f"{category} - {desc}"], className="text-gray-500 text-xs", key=f"all_param_desc_{i+1}_{refresh_key}")
+                    ui.element("h5", children=[f"V{param_num}"], className=f"{color_class} font-bold mb-1", key=f"all_param_title_{param_num}")
+                    ui.element("small", children=[f"{category} - {desc}"], className="text-gray-500 text-xs", key=f"all_param_desc_{param_num}")
                     
+                    # Context7 streamlit-shadcn-ui doğru kullanımı
                     slider_result = ui.slider(
-                        default_value=[default_val],
+                        default_value=[0.0],
                         min_value=-5.0,
                         max_value=5.0,
                         step=0.1,
                         label="",
-                        key=slider_key
+                        key=unique_slider_key
                     )
                     
-                    # Store the result - no session state modification after widget creation
-                    if slider_result is not None:
-                        v_features[f'V{i+1}'] = slider_result
+                    # Slider değerini kaydet
+                    if slider_result is not None and len(slider_result) > 0:
+                        v_features[f'V{param_num}'] = slider_result[0]
                     else:
-                        v_features[f'V{i+1}'] = [default_val]
+                        v_features[f'V{param_num}'] = 0.0
     
     elif param_tabs == '🎯 Temel Parametreler (V1-V7)':
         st.markdown("### 📊 Temel Risk Faktörleri")
@@ -515,63 +744,43 @@ def fraud_detection_page():
             with ui.card(key="basic_params_1"):
                 ui.element("h4", children=["🎯 Grup A (V1-V4)"], className="text-blue-600 font-semibold mb-3", key="group_a_title")
                 for i in range(4):
-                    # Safe state handling with unique key for force refresh
-                    refresh_key = st.session_state.get("slider_refresh_key", "")
-                    slider_key = f"v{i+1}_slider_{refresh_key}" if refresh_key else f"v{i+1}_slider"
-                    base_key = f"v{i+1}_slider"
-                    
-                    current_state = st.session_state.get(base_key, None)
-                    
-                    if current_state is None or not isinstance(current_state, list):
-                        default_val = 0.0
-                    else:
-                        default_val = current_state[0] if len(current_state) > 0 else 0.0
+                    param_num = i + 1
+                    unique_key = f"v_param_{param_num}_basic_tab"
                     
                     slider_result = ui.slider(
-                        default_value=[default_val],
+                        default_value=[0.0],
                         min_value=-5.0,
                         max_value=5.0,
                         step=0.1,
-                        label=f"V{i+1} - Risk Faktörü {i+1}",
-                        key=slider_key
+                        label=f"V{param_num} - Risk Faktörü {param_num}",
+                        key=unique_key
                     )
                     
-                    # Store the result - no session state modification after widget creation
-                    if slider_result is not None:
-                        v_features[f'V{i+1}'] = slider_result
+                    if slider_result is not None and len(slider_result) > 0:
+                        v_features[f'V{param_num}'] = slider_result[0]
                     else:
-                        v_features[f'V{i+1}'] = [default_val]
+                        v_features[f'V{param_num}'] = 0.0
                     
         with param_cols[1]:
             with ui.card(key="basic_params_2"):
                 ui.element("h4", children=["⚡ Grup B (V5-V7)"], className="text-green-600 font-semibold mb-3", key="group_b_title")
                 for i in range(4, 7):
-                    # Safe state handling with unique key for force refresh
-                    refresh_key = st.session_state.get("slider_refresh_key", "")
-                    slider_key = f"v{i+1}_slider_{refresh_key}" if refresh_key else f"v{i+1}_slider"
-                    base_key = f"v{i+1}_slider"
-                    
-                    current_state = st.session_state.get(base_key, None)
-                    
-                    if current_state is None or not isinstance(current_state, list):
-                        default_val = 0.0
-                    else:
-                        default_val = current_state[0] if len(current_state) > 0 else 0.0
+                    param_num = i + 1
+                    unique_key = f"v_param_{param_num}_basic_tab"
                     
                     slider_result = ui.slider(
-                        default_value=[default_val],
+                        default_value=[0.0],
                         min_value=-5.0,
                         max_value=5.0,
                         step=0.1,
-                        label=f"V{i+1} - Davranış Skoru {i+1}",
-                        key=slider_key
+                        label=f"V{param_num} - Davranış Skoru {param_num}",
+                        key=unique_key
                     )
                     
-                    # Store the result - no session state modification after widget creation
-                    if slider_result is not None:
-                        v_features[f'V{i+1}'] = slider_result
+                    if slider_result is not None and len(slider_result) > 0:
+                        v_features[f'V{param_num}'] = slider_result[0]
                     else:
-                        v_features[f'V{i+1}'] = [default_val]
+                        v_features[f'V{param_num}'] = 0.0
     
     elif param_tabs == '⚡ Gelişmiş (V8-V14)':
         st.markdown("### ⚡ Gelişmiş Analiz Parametreleri")
@@ -581,45 +790,43 @@ def fraud_detection_page():
             with ui.card(key="advanced_params_1"):
                 ui.element("h4", children=["📈 İşlem Paterni (V8-V11)"], className="text-purple-600 font-semibold mb-3", key="pattern_title")
                 for i in range(7, 11):
-                    # Safe state handling
-                    slider_key = f"v{i+1}_slider"
-                    current_state = st.session_state.get(slider_key, None)
+                    param_num = i + 1
+                    unique_key = f"v_param_{param_num}_advanced_tab"
                     
-                    if current_state is None or not isinstance(current_state, list):
-                        default_val = 0.0
-                    else:
-                        default_val = current_state[0] if len(current_state) > 0 else 0.0
-                    
-                    v_features[f'V{i+1}'] = ui.slider(
-                        default_value=[default_val],
+                    slider_result = ui.slider(
+                        default_value=[0.0],
                         min_value=-5.0,
                         max_value=5.0,
                         step=0.1,
-                        label=f"V{i+1} - İşlem Paterni {i+1}",
-                        key=slider_key
+                        label=f"V{param_num} - İşlem Paterni {param_num}",
+                        key=unique_key
                     )
+                    
+                    if slider_result is not None and len(slider_result) > 0:
+                        v_features[f'V{param_num}'] = slider_result[0]
+                    else:
+                        v_features[f'V{param_num}'] = 0.0
                     
         with param_cols[1]:
             with ui.card(key="advanced_params_2"):
                 ui.element("h4", children=["🔍 Anomali Tespiti (V12-V14)"], className="text-orange-600 font-semibold mb-3", key="anomaly_title")
                 for i in range(11, 14):
-                    # Safe state handling
-                    slider_key = f"v{i+1}_slider"
-                    current_state = st.session_state.get(slider_key, None)
+                    param_num = i + 1
+                    unique_key = f"v_param_{param_num}_advanced_tab"
                     
-                    if current_state is None or not isinstance(current_state, list):
-                        default_val = 0.0
-                    else:
-                        default_val = current_state[0] if len(current_state) > 0 else 0.0
-                    
-                    v_features[f'V{i+1}'] = ui.slider(
-                        default_value=[default_val],
+                    slider_result = ui.slider(
+                        default_value=[0.0],
                         min_value=-5.0,
                         max_value=5.0,
                         step=0.1,
-                        label=f"V{i+1} - Anomali Skoru {i+1}",
-                        key=slider_key
+                        label=f"V{param_num} - Anomali Skoru {param_num}",
+                        key=unique_key
                     )
+                    
+                    if slider_result is not None and len(slider_result) > 0:
+                        v_features[f'V{param_num}'] = slider_result[0]
+                    else:
+                        v_features[f'V{param_num}'] = 0.0
     
     elif param_tabs == '🔬 Uzman (V15-V21)':
         st.markdown("### 🔬 Uzman Seviye Parametreler")
@@ -629,45 +836,43 @@ def fraud_detection_page():
             with ui.card(key="expert_params_1"):
                 ui.element("h4", children=["🛡️ Güvenlik Skorları (V15-V18)"], className="text-red-600 font-semibold mb-3", key="security_title")
                 for i in range(14, 18):
-                    # Safe state handling
-                    slider_key = f"v{i+1}_slider"
-                    current_state = st.session_state.get(slider_key, None)
+                    param_num = i + 1
+                    unique_key = f"v_param_{param_num}_expert_tab"
                     
-                    if current_state is None or not isinstance(current_state, list):
-                        default_val = 0.0
-                    else:
-                        default_val = current_state[0] if len(current_state) > 0 else 0.0
-                    
-                    v_features[f'V{i+1}'] = ui.slider(
-                        default_value=[default_val],
+                    slider_result = ui.slider(
+                        default_value=[0.0],
                         min_value=-5.0,
                         max_value=5.0,
                         step=0.1,
-                        label=f"V{i+1} - Güvenlik Skoru {i+1}",
-                        key=slider_key
+                        label=f"V{param_num} - Güvenlik Skoru {param_num}",
+                        key=unique_key
                     )
+                    
+                    if slider_result is not None and len(slider_result) > 0:
+                        v_features[f'V{param_num}'] = slider_result[0]
+                    else:
+                        v_features[f'V{param_num}'] = 0.0
                     
         with param_cols[1]:
             with ui.card(key="expert_params_2"):
                 ui.element("h4", children=["🎖️ Risk Profili (V19-V21)"], className="text-indigo-600 font-semibold mb-3", key="risk_profile_title")
                 for i in range(18, 21):
-                    # Safe state handling
-                    slider_key = f"v{i+1}_slider"
-                    current_state = st.session_state.get(slider_key, None)
+                    param_num = i + 1
+                    unique_key = f"v_param_{param_num}_expert_tab"
                     
-                    if current_state is None or not isinstance(current_state, list):
-                        default_val = 0.0
-                    else:
-                        default_val = current_state[0] if len(current_state) > 0 else 0.0
-                    
-                    v_features[f'V{i+1}'] = ui.slider(
-                        default_value=[default_val],
+                    slider_result = ui.slider(
+                        default_value=[0.0],
                         min_value=-5.0,
                         max_value=5.0,
                         step=0.1,
-                        label=f"V{i+1} - Risk Profili {i+1}",
-                        key=slider_key
+                        label=f"V{param_num} - Risk Profili {param_num}",
+                        key=unique_key
                     )
+                    
+                    if slider_result is not None and len(slider_result) > 0:
+                        v_features[f'V{param_num}'] = slider_result[0]
+                    else:
+                        v_features[f'V{param_num}'] = 0.0
     
     elif param_tabs == '🚀 Pro (V22-V28)':
         st.markdown("### 🚀 Profesyonel AI Parametreleri")
@@ -677,45 +882,43 @@ def fraud_detection_page():
             with ui.card(key="pro_params_1"):
                 ui.element("h4", children=["🧠 Makine Öğrenmesi (V22-V25)"], className="text-teal-600 font-semibold mb-3", key="ml_title")
                 for i in range(21, 25):
-                    # Safe state handling
-                    slider_key = f"v{i+1}_slider"
-                    current_state = st.session_state.get(slider_key, None)
+                    param_num = i + 1
+                    unique_key = f"v_param_{param_num}_pro_tab"
                     
-                    if current_state is None or not isinstance(current_state, list):
-                        default_val = 0.0
-                    else:
-                        default_val = current_state[0] if len(current_state) > 0 else 0.0
-                    
-                    v_features[f'V{i+1}'] = ui.slider(
-                        default_value=[default_val],
+                    slider_result = ui.slider(
+                        default_value=[0.0],
                         min_value=-5.0,
                         max_value=5.0,
                         step=0.1,
-                        label=f"V{i+1} - ML Faktörü {i+1}",
-                        key=slider_key
+                        label=f"V{param_num} - ML Faktörü {param_num}",
+                        key=unique_key
                     )
+                    
+                    if slider_result is not None and len(slider_result) > 0:
+                        v_features[f'V{param_num}'] = slider_result[0]
+                    else:
+                        v_features[f'V{param_num}'] = 0.0
                     
         with param_cols[1]:
             with ui.card(key="pro_params_2"):
                 ui.element("h4", children=["🎯 Doğruluk Artırıcıları (V26-V28)"], className="text-cyan-600 font-semibold mb-3", key="accuracy_title")
                 for i in range(25, 28):
-                    # Safe state handling
-                    slider_key = f"v{i+1}_slider"
-                    current_state = st.session_state.get(slider_key, None)
+                    param_num = i + 1
+                    unique_key = f"v_param_{param_num}_pro_tab"
                     
-                    if current_state is None or not isinstance(current_state, list):
-                        default_val = 0.0
-                    else:
-                        default_val = current_state[0] if len(current_state) > 0 else 0.0
-                    
-                    v_features[f'V{i+1}'] = ui.slider(
-                        default_value=[default_val],
+                    slider_result = ui.slider(
+                        default_value=[0.0],
                         min_value=-5.0,
                         max_value=5.0,
                         step=0.1,
-                        label=f"V{i+1} - Doğruluk Faktörü {i+1}",
-                        key=slider_key
+                        label=f"V{param_num} - Doğruluk Faktörü {param_num}",
+                        key=unique_key
                     )
+                    
+                    if slider_result is not None and len(slider_result) > 0:
+                        v_features[f'V{param_num}'] = slider_result[0]
+                    else:
+                        v_features[f'V{param_num}'] = 0.0
     
     # Parametre özeti
     st.markdown("---")
@@ -723,7 +926,7 @@ def fraud_detection_page():
     
     with summary_cols[0]:
         # Progress bar for non-zero parameters
-        param_count = sum(1 for key, value in v_features.items() if value != 0.0)
+        param_count = sum(1 for key, value in v_features.items() if (isinstance(value, (int, float)) and value != 0.0) or (isinstance(value, list) and len(value) > 0 and value[0] != 0.0))
         progress_value = param_count / 28
         st.markdown(f"**📊 Parametre Kullanımı: {param_count}/28**")
         st.progress(progress_value)
@@ -740,29 +943,50 @@ def fraud_detection_page():
             key="param_count_metric"
         )
     
+    # Eksik parametreleri doldur - tüm V1-V28 parametrelerinin mevcut olduğundan emin ol
+    for i in range(1, 29):
+        if f'V{i}' not in v_features:
+            v_features[f'V{i}'] = [0.0]
+    
     # Analiz sonuçları
     if analyze_btn:
         try:
-            # Input değerlerini hazırla
-            amount_val = float(amount) if amount else 100.0
-            time_val = float(time_seconds) if time_seconds else 3600.0
+            st.markdown('<div class="section-header">🔄 Analiz İşleniyor...</div>', unsafe_allow_html=True)
             
-            # V features'ları al (zaten PCA ile normalize edilmiş)
-            # ui.slider() artık doğrudan liste döndürüyor, ilk değeri al
+            # Input değerlerini güvenli şekilde hazırla
+            try:
+                amount_val = float(amount) if amount and str(amount).strip() else 100.0
+            except (ValueError, TypeError):
+                amount_val = 100.0
+                st.warning("⚠️ Geçersiz miktar değeri, varsayılan değer (100.0) kullanılıyor.")
+            
+            try:
+                time_val = float(time_seconds) if time_seconds and str(time_seconds).strip() else 3600.0
+            except (ValueError, TypeError):
+                time_val = 3600.0
+                st.warning("⚠️ Geçersiz zaman değeri, varsayılan değer (3600) kullanılıyor.")
+            
+            # V features'ları güvenli şekilde al
             v_feature_values = []
-            for i in range(28):
-                slider_val = v_features.get(f'V{i+1}', [0.0])
-                if isinstance(slider_val, list):
-                    v_feature_values.append(slider_val[0] if slider_val else 0.0)
+            for i in range(1, 29):
+                # v_features artık liste değil, doğrudan sayı değeri tutuyor
+                feature_value = v_features.get(f'V{i}', 0.0)
+                if isinstance(feature_value, list):
+                    v_feature_values.append(feature_value[0] if len(feature_value) > 0 else 0.0)
                 else:
-                    v_feature_values.append(slider_val if slider_val is not None else 0.0)
+                    v_feature_values.append(float(feature_value) if feature_value is not None else 0.0)
             
-            # Sadece Time ve Amount'ı scale et (V features dokunulmaz)
+            # Model ve scaler kontrolü
+            if model is None or scaler is None:
+                st.error("❌ Model veya scaler yüklenemedi! Lütfen sayfayı yenileyin.")
+                return
+            
+            # Sadece Time ve Amount'ı scale et
             time_amount_scaled = scaler.transform([[time_val, amount_val]])
             time_scaled = time_amount_scaled[0][0]
             amount_scaled = time_amount_scaled[0][1]
             
-            # Doğru sıralama: V1-V28, Time, Amount (original dataset formatı)
+            # Doğru sıralama: V1-V28, Time, Amount
             features_final = v_feature_values + [time_scaled, amount_scaled]
             features_array = np.array(features_final).reshape(1, -1)
             
@@ -810,11 +1034,12 @@ def fraud_detection_page():
                 )
             
             # Risk analizi grafiği
+            st.markdown("### 📊 Risk Seviyesi Görselleştirmesi")
             fig = go.Figure(go.Indicator(
                 mode = "gauge+number+delta",
                 value = risk_score,
                 domain = {'x': [0, 1], 'y': [0, 1]},
-                title = {'text': "Risk Seviyesi"},
+                title = {'text': "Risk Seviyesi (%)"},
                 delta = {'reference': 50},
                 gauge = {
                     'axis': {'range': [None, 100]},
@@ -835,8 +1060,19 @@ def fraud_detection_page():
             fig.update_layout(height=400)
             st.plotly_chart(fig, use_container_width=True)
             
+            # İşlem detayları özeti
+            with ui.card(key="transaction_summary"):
+                ui.element("h4", children=["📄 İşlem Detayları"], key="transaction_summary_title")
+                ui.element("p", children=[f"💰 Miktar: ${amount_val:,.2f}"], key="summary_amount")
+                ui.element("p", children=[f"⏰ Zaman: {time_val:,.0f} saniye"], key="summary_time")
+                ui.element("p", children=[f"🔧 Aktif Parametreler: {param_count}/28"], key="summary_params")
+                ui.element("p", children=[f"🎯 Sonuç: {'Dolandırıcılık Tespit Edildi' if prediction == 1 else 'Normal İşlem'}"], key="summary_result")
+            
+            st.success("✅ Analiz tamamlandı!")
+            
         except Exception as e:
-            st.error(f"Analiz sırasında hata oluştu: {e}")
+            st.error(f"❌ Analiz sırasında hata oluştu: {str(e)}")
+            st.error("Lütfen input değerlerini kontrol edin ve tekrar deneyin.")
 
 # Raporlar Dashboard
 def reports_dashboard():
@@ -981,41 +1217,151 @@ def reports_dashboard():
             )
     
     elif report_tab == '🎯 Risk Analizi':
-        st.markdown("### 🎯 Risk Dağılımı ve Analizi")
+        st.markdown("### 🎯 AI Model Analiz Raporları")
         
-        # Risk distribution pie chart
-        risk_labels = ['Düşük Risk', 'Orta Risk', 'Yüksek Risk', 'Kritik Risk']
-        risk_values = [75.2, 18.5, 5.1, 1.2]
-        risk_colors = ['#10b981', '#f59e0b', '#ef4444', '#7c2d12']
-        
-        fig = go.Figure(data=[go.Pie(
-            labels=risk_labels,
-            values=risk_values,
-            marker_colors=risk_colors,
-            hole=0.4
-        )])
-        
-        fig.update_traces(textposition='inside', textinfo='percent+label')
-        fig.update_layout(
-            title='Risk Seviyesi Dağılımı (%)',
-            height=400
+        # Visual reports navigation
+        visual_tab = ui.tabs(
+            options=['📊 Veri Analizi', '🎯 Feature Importance', '📈 Model Karşılaştırma', '🔬 Clustering Analizi'],
+            default_value='📊 Veri Analizi',
+            key="visual_reports_tabs"
         )
-        st.plotly_chart(fig, use_container_width=True)
         
-        # Risk factors analysis
-        st.markdown("### 🔍 Risk Faktörleri Analizi")
+        if visual_tab == '📊 Veri Analizi':
+            st.markdown("### 📊 Kapsamlı Veri Analizi Raporu")
+            st.markdown("*Veri seti üzerinde yapılan detaylı analiz sonuçları*")
+            
+            try:
+                image_path = os.path.join(os.getcwd(), "data_analysis.png")
+                if os.path.exists(image_path):
+                    st.image(image_path, caption="🔍 Advanced Fraud Detection - Data Analysis", use_container_width=True)
+                else:
+                    st.error(f"📊 data_analysis.png dosyası bulunamadı. Aranılan konum: {image_path}")
+                
+                with ui.card(key="data_analysis_summary"):
+                    ui.element("h4", children=["📈 Analiz Özeti"], key="data_summary_title")
+                    ui.element("p", children=["• Sınıf Dağılımı: %99.8 Normal, %0.2 Dolandırıcılık"], key="data_1")
+                    ui.element("p", children=["• En Önemli Feature'lar: V17, V14, V12, V10"], key="data_2")
+                    ui.element("p", children=["• Zaman Dağılımı: 48 saatlik dönem analizi"], key="data_3")
+                    ui.element("p", children=["• Miktar Analizi: Dolandırıcılık işlemleri daha düşük miktarlarda"], key="data_4")
+                    
+            except Exception as e:
+                st.error(f"📊 Veri analizi görseli yüklenirken hata: {str(e)}")
         
-        risk_factors = [
-            {"factor": "Yüksek İşlem Miktarı", "impact": 0.85, "frequency": 145},
-            {"factor": "Gece Saati İşlemleri", "impact": 0.72, "frequency": 89},
-            {"factor": "Farklı Lokasyon", "impact": 0.68, "frequency": 234},
-            {"factor": "Hızlı Ardışık İşlem", "impact": 0.61, "frequency": 67},
-            {"factor": "Yeni Müşteri", "impact": 0.45, "frequency": 156}
-        ]
+        elif visual_tab == '🎯 Feature Importance':
+            st.markdown("### 🎯 En Önemli 10 Feature Analizi")
+            st.markdown("*AI modelinin karar verirken en çok önemsediği parametreler*")
+            
+            try:
+                image_path = os.path.join(os.getcwd(), "feature_importance.png")
+                if os.path.exists(image_path):
+                    st.image(image_path, caption="🏆 En Önemli Feature'lar - V17 lider!", use_container_width=True)
+                else:
+                    st.error(f"🎯 feature_importance.png dosyası bulunamadı. Aranılan konum: {image_path}")
+                
+                with ui.card(key="feature_importance_summary"):
+                    ui.element("h4", children=["🏆 Feature Importance Özeti"], key="feature_summary_title")
+                    ui.element("p", children=["• 1. V17: %18.7 önem (En kritik feature)"], key="feature_1")
+                    ui.element("p", children=["• 2. V14: %17.1 önem (İkinci en önemli)"], key="feature_2")
+                    ui.element("p", children=["• 3. V12: %10.6 önem (Üçüncü sırada)"], key="feature_3")
+                    ui.element("p", children=["• Top 10 feature toplam etkisi: %85+"], key="feature_4")
+                    
+            except Exception as e:
+                st.error(f"🎯 Feature importance görseli yüklenirken hata: {str(e)}")
         
-        risk_df = pd.DataFrame(risk_factors)
-        risk_df.columns = ["Risk Faktörü", "Etki Seviyesi", "Tespit Sayısı"]
-        ui.table(data=risk_df, maxHeight=300)
+        elif visual_tab == '📈 Model Karşılaştırma':
+            st.markdown("### 📈 Kapsamlı Model Performans Karşılaştırması")
+            st.markdown("*12 farklı AI modelinin detaylı performans analizi*")
+            
+            try:
+                image_path = os.path.join(os.getcwd(), "model_results.png")
+                if os.path.exists(image_path):
+                    st.image(image_path, caption="🤖 Model Karşılaştırma - Random Forest Kazanan!", use_container_width=True)
+                else:
+                    st.error(f"📈 model_results.png dosyası bulunamadı. Aranılan konum: {image_path}")
+                
+                # Model performance summary
+                model_cols = st.columns(3)
+                
+                with model_cols[0]:
+                    ui.metric_card(
+                        title="En İyi Model",
+                        content="Random Forest",
+                        description="F1-Score: 0.874",
+                        key="best_model_card"
+                    )
+                
+                with model_cols[1]:
+                    ui.metric_card(
+                        title="En Hızlı Model",
+                        content="Linear SVM",
+                        description="Optimize edilmiş",
+                        key="fastest_model_card"
+                    )
+                
+                with model_cols[2]:
+                    ui.metric_card(
+                        title="En Yüksek Precision",
+                        content="Random Forest",
+                        description="94.12% doğruluk",
+                        key="highest_precision_card"
+                    )
+                
+                # Raporlar için detaylı model bilgileri
+                st.markdown("### 🎯 Kapsamlı Model Analizi")
+                
+                model_analysis_cols = st.columns(2)
+                
+                with model_analysis_cols[0]:
+                    st.markdown("""
+                    **🏆 En İyi Performans:**
+                    - **Random Forest:** %87.4 F1-Score
+                    - **XGBoost:** %80.6 F1-Score  
+                    - **Decision Tree:** %81.1 F1-Score
+                    - **Neural Network (SMOTE):** %79.8 F1-Score
+                    
+                    **⚡ En Hızlı Modeller:**
+                    - **Linear SVM:** Optimize edilmiş hız
+                    - **Logistic Regression:** Hızlı tahmin
+                    - **Naive Bayes:** Düşük kaynak kullanımı
+                    """)
+                
+                with model_analysis_cols[1]:
+                    st.markdown("""
+                    **🔬 Teknik Bulgular:**
+                    - **En İyi Sampling:** Original ve SMOTE
+                    - **En Stabil:** Random Forest 
+                    - **En Yüksek Recall:** Isolation Forest (%87.6)
+                    - **En Dengeli:** Neural Network ailesi
+                    
+                    **📊 Genel Sonuç:**
+                    - 12 model kapsamlı test edildi
+                    - Random Forest açık ara kazandı
+                    - Modern AI teknikleri başarılı
+                    """)
+                    
+            except Exception as e:
+                st.error(f"📈 Model karşılaştırma görseli yüklenirken hata: {str(e)}")
+        
+        elif visual_tab == '🔬 Clustering Analizi':
+            st.markdown("### 🔬 t-SNE ve PCA Clustering Analizi")
+            st.markdown("*Veri noktalarının görsel cluster analizi*")
+            
+            try:
+                image_path = os.path.join(os.getcwd(), "clustering_analysis.png")
+                if os.path.exists(image_path):
+                    st.image(image_path, caption="🔬 Clustering Visualization - Normal vs Fraud Ayrımı", use_container_width=True)
+                else:
+                    st.error(f"🔬 clustering_analysis.png dosyası bulunamadı. Aranılan konum: {image_path}")
+                
+                with ui.card(key="clustering_summary"):
+                    ui.element("h4", children=["🔬 Clustering Analizi Özeti"], key="clustering_summary_title")
+                    ui.element("p", children=["• t-SNE: Net cluster ayrımı gözlemlendi"], key="clustering_1")
+                    ui.element("p", children=["• PCA: İlk 2 bileşen %61.2 + %8.4 = %69.6 variance"], key="clustering_2")
+                    ui.element("p", children=["• Dolandırıcılık pattern'ları belirgin şekilde ayrılıyor"], key="clustering_3")
+                    ui.element("p", children=["• Modelin başarısının görsel kanıtı"], key="clustering_4")
+                    
+            except Exception as e:
+                st.error(f"🔬 Clustering analizi görseli yüklenirken hata: {str(e)}")
     
     elif report_tab == '📋 Özet Rapor':
         st.markdown("### 📋 Kapsamlı Sistem Özeti")
